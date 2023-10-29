@@ -1,0 +1,5 @@
+webapp:
+  url: <%= ENV['WEBAPP_URL'] %>
+mobileapp:
+  url: defaultapi
+session_expiration_token: <%= ENV['SESSION_EXPIRATION_TOKEN'] %>

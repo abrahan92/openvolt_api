@@ -1,0 +1,7 @@
+webapp:
+  url: <%= ENV['WEBAPP_URL'] %>
+session_expiration_token: <%= ENV['SESSION_EXPIRATION_TOKEN'] %>
+meter:
+  openbolt_uri: <%= ENV['METER_OPENBOLT_URI'] %>
+  openbolt_api_key: <%= ENV['METER_OPENBOLT_API_KEY'] %>
+  national_grid_uri: <%= ENV['METER_NATIONAL_GRID_URI'] %>

@@ -1,0 +1,159 @@
+name: Deploy To Cloud Run
+
+on:
+  push:
+    branches:
+      - new-cloud-run
+
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  API_IMAGE: ${{ secrets.API_IMAGE }}
+  APP_USER_EMAIL: ${{ secrets.APP_USER_EMAIL }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  CONNECTION_NAME: ${{ secrets.CONNECTION_NAME }}
+  DB_DBNAME: ${{ secrets.DB_DBNAME }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PASS: ${{ secrets.DB_PASS }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_USER: ${{ secrets.DB_USER }}
+  BUNDLE_GITHUB__COM: ${{ secrets.PAT_TOKEN }}
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+  SENDGRID_NAME: ${{ secrets.SENDGRID_NAME }}
+  SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+  SET_COOKIE_DOMAIN: ${{ secrets.SET_COOKIE_DOMAIN }}
+  SESSION_EXPIRATION_TOKEN: ${{ secrets.SESSION_EXPIRATION_TOKEN }}
+  WEBAPP_URL: ${{ secrets.WEBAPP_URL }}
+  GCP_AUTH_PASS_DECRYPT: ${{ secrets.GCP_AUTH_PASS_DECRYPT }}
+  IMAGE_STORAGE_BUCKET_NAME: ${{ secrets.IMAGE_STORAGE_BUCKET_NAME }}
+  STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+        - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install Ruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.3
+
+      # Cache gems - this will speed up subsequent workflow runs
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      
+      # Install gems
+      - name: Bundle install
+        run: |
+          bundle config github.com ${{ secrets.PAT_TOKEN }}:x-oauth-basic
+          sudo apt-get -yqq install libpq-dev
+          gem install pg
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+          bundle exec rake db:create db:schema:load RAILS_ENV=test
+      
+      # Run RSpec
+      - name: Run tests
+        run: bundle exec rspec
+
+      # Alternative option - authentication via credentials json
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0.4.1'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+      - run: |-
+          gcloud --quiet auth configure-docker
+      
+      # Build the Docker image only if it doesn't exist
+      - name: Check if image exists
+        id: check_image
+        run: |
+          exists=$(docker pull us.gcr.io/$PROJECT_ID/$API_IMAGE:$GITHUB_SHA || echo "false")
+          echo "::set-output name=exists::$exists"
+
+
+      - name: Build
+        run: |-
+          if [ "${{ steps.check_image.outputs.exists }}" == "false" ]; then
+            docker build --no-cache \
+              --tag "us.gcr.io/$PROJECT_ID/$API_IMAGE:$GITHUB_SHA" \
+              --build-arg GITHUB_SHA="$GITHUB_SHA" \
+              --build-arg GITHUB_REF="$GITHUB_REF" \
+              --build-arg GITHUB_REF="$GITHUB_REF" \
+              --build-arg PROJECT_ID=${{ env.PROJECT_ID }} \
+              --build-arg BUCKET_NAME=${{ env.BUCKET_NAME }} \
+              --build-arg CONNECTION_NAME=${{ env.CONNECTION_NAME }} \
+              --build-arg APP_USER_EMAIL=${{ env.APP_USER_EMAIL }} \
+              --build-arg BUNDLE_GITHUB__COM=${{ env.BUNDLE_GITHUB__COM }} \
+              --build-arg DB_HOST=${{ env.DB_HOST }} \
+              --build-arg DB_PORT=${{ env.DB_PORT }} \
+              --build-arg DB_USER=${{ env.DB_USER }} \
+              --build-arg DB_DBNAME=${{ env.DB_DBNAME }} \
+              --build-arg SECRET_KEY_BASE=${{ env.SECRET_KEY_BASE }} \
+              --build-arg SENDGRID_API_KEY=${{ env.SENDGRID_API_KEY }} \
+              --build-arg GCP_AUTH_PASS_DECRYPT=${{ env.GCP_AUTH_PASS_DECRYPT }} \
+              --build-arg IMAGE_STORAGE_BUCKET_NAME=${{ env.IMAGE_STORAGE_BUCKET_NAME }} \
+              --build-arg STRIPE_PUBLISHABLE_KEY=${{ env.STRIPE_PUBLISHABLE_KEY }} \
+              --build-arg STRIPE_SECRET_KEY=${{ env.STRIPE_SECRET_KEY }} \
+              .
+          fi
+
+      # Push the Docker image to Google Container Registry only if it was built
+      - name: Publish
+        run: |-
+          if [ "${{ steps.check_image.outputs.exists }}" == "false" ]; then
+            docker push "us.gcr.io/$PROJECT_ID/$API_IMAGE:$GITHUB_SHA"
+          fi
+
+      - name: Get latest image digest
+        id: get-latest-digest
+        run: |
+          LATEST_DIGEST=$(gcloud container images list-tags us.gcr.io/$PROJECT_ID/$API_IMAGE --limit=1 --sort-by=~TIMESTAMP --format='get(digest)')
+          echo "::set-output name=digest::$LATEST_DIGEST"
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          API_IMAGE: ${{ secrets.API_IMAGE }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $PROJECT_ID --image us.gcr.io/$PROJECT_ID/$API_IMAGE@${{ steps.get-latest-digest.outputs.digest }} --platform managed --region europe-west1 --add-cloudsql-instances $CONNECTION_NAME --set-env-vars DB_HOST=$DB_HOST,DB_USER=$DB_USER,DB_PASS=$DB_PASS,DB_DBNAME=$DB_DBNAME,DB_PORT=$DB_PORT,SET_COOKIE_DOMAIN=$SET_COOKIE_DOMAIN,SESSION_EXPIRATION_TOKEN=$SESSION_EXPIRATION_TOKEN,SENDGRID_NAME=$SENDGRID_NAME,SENDGRID_API_KEY=$SENDGRID_API_KEY,WEBAPP_URL=$WEBAPP_URL,STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY,STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY --allow-unauthenticated
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          API_IMAGE: ${{ secrets.API_IMAGE }}
+          CONNECTION_NAME: ${{ secrets.CONNECTION_NAME }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DBNAME: ${{ secrets.DB_DBNAME }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          SET_COOKIE_DOMAIN: ${{ secrets.SET_COOKIE_DOMAIN }}
+          SESSION_EXPIRATION_TOKEN: ${{ secrets.SESSION_EXPIRATION_TOKEN }}
+          SENDGRID_NAME: ${{ secrets.SENDGRID_NAME }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          WEBAPP_URL: ${{ secrets.WEBAPP_URL }}
+          STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}

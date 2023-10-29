@@ -1,0 +1,32 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("LOCAL_DB_HOST") { 'localhost' } %>
+  port: <%= ENV.fetch("LOCAL_DB_PORT") { 5432 } %>
+  username: <%= ENV.fetch("LOCAL_DB_USER") { 'postgres' } %>
+  password: <%= ENV.fetch("LOCAL_DB_PASS") { 'postgres' } %>
+  schema_search_path: public
+
+development:
+  <<: *default
+  database: <%= ENV["LOCAL_DB_DBNAME"] %>
+
+# In order to test a Proxy Local connection
+# ./cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:[PORT] -credential_file=[CREDENTIALS_SERVICE_A_JSON]
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("LOCAL_DB_TEST_DB") { 'test_db' } %>
+
+production:
+  <<: *default
+  host: <%= ENV["DB_HOST"] %>
+  port: <%= ENV["DB_PORT"] %>
+  username: <%= ENV["DB_USER"] %>
+  password: <%= ENV["DB_PASS"] %>
+  database: <%= ENV["DB_DBNAME"] %>
+  variables:
+     statement_timeout: 5000

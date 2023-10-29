@@ -1,0 +1,35 @@
+version: '2'
+services:
+  db:
+    container_name: "postgres"
+    image: "postgres:13"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  app:
+    build:
+        context: .
+        args:
+          BUNDLE_GITHUB__COM: ${BUNDLE_GITHUB__COM}
+        dockerfile: ./local.Dockerfile
+    command: bash -c "bin/rails db:create && bin/rails db:migrate && bin/rails db:seed && bundle exec puma -C config/puma.rb"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    env_file:
+      - .envrc
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx.Dockerfile
+    depends_on:
+      - app
+    ports:
+      - 80:80
+volumes:
+  postgres_data:
