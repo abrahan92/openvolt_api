@@ -1,45 +1,79 @@
-# DefaultApi
+# 🚀 Openvolt Rails API Boost with Trailblazer 🚀
 
-This is the API that serves the DefaultApi backoffice, which you can find at [defaultapi backoffic project](https://github.com/defaultapi/backoffice)
+This is an advanced boilerplate project for Rails API development using the Trailblazer framework. Designed with best practices in mind, this project aims to separate your business layer from the core code, ensuring clean architecture and maintainable code. Whether you're building a new API or refactoring an existing one, this boilerplate offers a streamlined and robust starting point.
 
-## Tech stack
+Incorporating Trailblazer, this project encapsulates complex business logic, allowing developers to focus on delivering value rather than battling with intricacies of code organization. Moreover, with Rails at its heart, you get the benefits of a powerful and mature web framework.
 
-- Ruby version: `3.0.3`
-- Rails version: `7.0.4.2`
-- Package manager: [RVM (Ruby Version Manager)](https://rvm.io/rvm/install)
-- Database: [Postgres](https://www.postgresql.org/)
-  
-## API Documentation
+## 🌐 Getting Started
 
-The API documentation is available via our [postman team collection](https://app.getpostman.com/join-team?invite_code=3b631acae2c63dab5a7607dda439306a&target_code=5f82d189dd1310020b51ea032a472428)
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-## Getting Started
+### 🔑 Prerequisites
+To run this project, ensure you have the following installed on your machine:
 
-To set up the DefaultApi API on your local machine, follow these steps:
+#### [Docker Desktop](https://www.docker.com/products/docker-desktop) 
+Docker provides an easy-to-use desktop application that includes everything you need to build, share, and run containerized applications.
 
-1. Install RVM. For macOS users, you can use [Homebrew](https://brew.sh/) to install RVM:, do `brew install rvn`.
+Visit the Docker [Desktop official page](https://www.docker.com/products/docker-desktop).
+Choose the appropriate version for your operating system (Windows/Mac) and download the installer.
+Follow the installation instructions and, once installed, start Docker Desktop from your applications folder.
 
-2. Install Ruby version 3.0.3 by running the following command: `rvm install 3.0.3`. To verify that Ruby is installed, run:
+#### [Docker Compose](https://docs.docker.com/compose/install/)
 
-        ruby --version.
+If you're using Windows or Mac, Docker Compose is included as part of the Docker Desktop installation. For Linux users:
+Ensure you have Docker installed.
 
-3. Run the `bundle` command to install all the dependencies (gems) required by the API.
+Follow the official [installation](https://docs.docker.com/compose/install/) guide for Docker Compose.
 
-        `Gemfile.lock` will be created.
+⚠️ **Note**: If you're using Docker and Docker Compose to run the application, you won't need to manually install the following dependencies, as they'll be containerized. However, if you choose to run the application outside of Docker, ensure you have the following installed:
 
-4. Install [Docker Desktop](https://docs.docker.com/desktop/mac/install/). If you're using Homebrew you can run `brew install --cask docker`. Docker compose is now and [plugin](https://docs.docker.com/compose/install/) and must be installed seprately. On Mac, you can install using Homebrew `brew install docker-compose`. You will need to start Docker Desktop at least once to give it priviliged access rights to your machine.
-   
-5. Install a databases administrator like [dbehaver](https://dbeaver.io/)
+#### [Ruby](https://www.ruby-lang.org/en/downloads/) (version 3.0.3)
+#### [Rails](https://rubyonrails.org/) (version 7)
+#### [Bundler](https://bundler.io/) (for managing Ruby gems)
+#### [Trailblazer](http://trailblazer.to/) (version 2.0.7 or compatible)
 
-6. Create a `latydo_development` database in database manager using [docker-compose.yml](docker-compose.yml) file information in `db` data.
 
-7. Create `.env` file and ask an administrator for the variables and values.
-## Run application and database creation
+In addition, it's recommended to familiarize yourself with the Trailblazer documentation to make the most out of its features and best practices.
 
-To run the DefaultApi API and create the necessary database tables, follow these steps:
+### 💽 Installing
 
-* Run `docker-compose build`
-  
-* Run `docker-compose up -d`
+1.  Clone the repo:
 
-      Check that the DefaultApi API containers are running and that the database tables were created and populated with seed information.
+        git clone https://github.com/abrahan92/openvolt_api.git
+
+2.  Navigate into the directory:
+
+        cd openvolt_api
+
+## 🐳 Docker
+
+We also provide a Dockerfile and DockerCompose for running the api with Docker containers.
+
+After having docker and docker-compose installed, run:
+
+    `docker-compose up -d`
+
+## 📁 Project Structure
+The application is structured around the Rails conventions, enhanced with the Trailblazer framework to keep the business logic separate and modularized.
+
+**app/concepts** <br/><br/>
+This is where the heart of the application resides. Each business operation, action, policy, representer or contract is organized into its own directory within this folder. It provides a clear separation and encapsulation of business logic, ensuring that the application remains maintainable and scalable as it grows.
+
+**app/models** <br/><br/>
+Contains the ActiveRecord models that represent the data structure of the application. Models are used to interact with the database and define relationships between different data entities.
+
+**app/controllers** <br/><br/>
+This folder contains the Rails controllers, which handle the incoming HTTP requests, invoke the appropriate business logic from app/concepts, and return the corresponding responses.
+
+**config** <br/><br/>
+Contains configuration files and routes for the Rails application.
+
+**db** <br/><br/>
+Includes database migrations, schema, and seeds.
+
+**spec** <br/><br/>
+Root directory for all the tests. It's recommended to have corresponding test files for each of the components in app/concepts, ensuring that the business logic is robust and functions as expected.
+
+## 👥 Contributing
+
+If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.

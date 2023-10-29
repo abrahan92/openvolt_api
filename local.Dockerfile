@@ -1,7 +1,5 @@
 FROM ruby:3.0.3
 
-ARG BUNDLE_GITHUB__COM
-ENV BUNDLE_GITHUB__COM=$BUNDLE_GITHUB__COM
 # Install node 14-LTS and yarn
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends \

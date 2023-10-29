@@ -9,6 +9,10 @@ ActiveRecord::Base.transaction do
     Doorkeeper::Application.create!(name: "Mobile App", redirect_uri: "", scopes: "")
   end
 
+  if Doorkeeper::Application.find_by(name: "Openvolt App").nil?
+    Doorkeeper::Application.create!(name: "Openvolt App", uid: "test_api_key_client_id", secret: "test_api_key_client_secret", redirect_uri: "", scopes: "")
+  end
+  
   # Create roles
   if Role.count == 0
     ['super_admin', 'admin', 'new_other', 'other'].each do |role_name|
