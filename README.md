@@ -45,13 +45,105 @@ In addition, it's recommended to familiarize yourself with the Trailblazer docum
 
         cd openvolt_api
 
+## 💻 ENV Variables
+
+Before launching, ask the project manager to provide you with the information of the .env file <br/><br/>
+
+**1.** Create a new file called `.env` in the project root and paste the data sent by the person responsible.
+
+## <img src="https://static-00.iconduck.com/assets.00/heroku-icon-2048x2048-4rs1dp6p.png" width="25px" height="25px"> Test on Heroku
+
+For this, you can skip the installation with Docker, import the Postman collection. <br /><br />
+
+Add this URL [`https://openvolt-ca213140fef8.herokuapp.com`](https://openvolt-ca213140fef8.herokuapp.com) to the `api_url` collection variable and run the endpoints described in the Postman section below.
+
 ## 🐳 Docker
 
 We also provide a Dockerfile and DockerCompose for running the api with Docker containers.
 
-After having docker and docker-compose installed, run:
+After having docker and docker-compose installed and the ENV variables set, run:
 
-    `docker-compose up -d`
+    docker-compose up -d
+
+## <img src="https://iconape.com/wp-content/png_logo_vector/postman.png" width="25px" height="25px"> Steps to test POSTMAN endpoint
+
+**1.** You can go to the `/postman` folder in the project root, extract the collection, and then import it into Postman; you will see that the collection is called Openvolt. <br />
+
+Inside it, there are two subfolders (**API/OAUTH)** <br />
+
+- **API** is where you will find all the endpoints of our API <br />
+- **OAUTH** are the authentication endpoints necessary to access the protected endpoints.<br />
+
+**2.** In the collection, variables are the variables necessary to perform the test. `(api_url, email, password, client_id, client_secret, access_token, refresh_token)` <br /><br />
+**3.** Go to the `Openvolt/OAUTH` folder and run the `Login endpoint` to obtain the valid access_token to access the endpoints within the API <br /><br />
+**3.** Go to the `API/V1/Meter/[SHOW] Consumption` endpoint and run to get the data requested <br /><br />
+**3.1** The request is validated so you will need specific fields such as: `start_date (Date)`, `end_date (Date)`, `granularity (String)` **[Just hh available this time]** <br/><br/>
+**4.** The endpoint url should be in this way `{{api_url}}/api/v1/meters/:meter_id/consumption?start_date=2023-01-01&end_date=2023-01-03&granularity=hh` <br/><br/>
+**5.** Response structure <br/><br/>
+```
+{
+    "data": {
+        "meter_id": "6514167223e3d1424bf82742",
+        "start_date": "2023-01-01",
+        "end_date": "2023-01-03",
+        "energy_consumption": {
+            "amount": 5488.0,
+            "unit": "kWh"
+        },
+        "carbon_emission": {
+            "amount": 720.73,
+            "unit": "kgCO2"
+        },
+        "fuel_mix": [
+            {
+                "name": "biomass",
+                "amount": 4.74,
+                "unit": "%"
+            },
+            {
+                "name": "coal",
+                "amount": 2.63,
+                "unit": "%"
+            },
+            {
+                "name": "imports",
+                "amount": 13.81,
+                "unit": "%"
+            },
+            {
+                "name": "gas",
+                "amount": 21.04,
+                "unit": "%"
+            },
+            {
+                "name": "nuclear",
+                "amount": 20.81,
+                "unit": "%"
+            },
+            {
+                "name": "other",
+                "amount": 0.0,
+                "unit": "%"
+            },
+            {
+                "name": "hydro",
+                "amount": 2.73,
+                "unit": "%"
+            },
+            {
+                "name": "solar",
+                "amount": 1.67,
+                "unit": "%"
+            },
+            {
+                "name": "wind",
+                "amount": 31.76,
+                "unit": "%"
+            }
+        ]
+    }
+}
+```
 
 ## 📁 Project Structure
 The application is structured around the Rails conventions, enhanced with the Trailblazer framework to keep the business logic separate and modularized.

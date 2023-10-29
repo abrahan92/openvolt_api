@@ -23,7 +23,7 @@ ActiveRecord::Base.transaction do
   # Create permissions
   if RolePermission.count == 0
 
-    ['home', 'users', 'roles', 'permissions'].each do |section|
+    ['home', 'users', 'roles', 'permissions', 'energy_meter'].each do |section|
       ['read', 'create', 'update', 'delete'].each do |action_perform|
         Permission.create! action_perform: action_perform, subject: section
       end
@@ -33,7 +33,7 @@ ActiveRecord::Base.transaction do
   # Add permissions to roles
   if RolePermission.count == 0
     # super_admin
-    ['home', 'users', 'roles', 'permissions'].each do |section|
+    ['home', 'users', 'roles', 'permissions', 'energy_meter'].each do |section|
       ['read', 'create', 'update', 'delete'].each do |action_perform|
         RolePermission.create! role_id: Role.find_by(name: 'super_admin').id, permission_id: Permission.find_by(action_perform: action_perform, subject: section).id
       end
@@ -99,6 +99,25 @@ ActiveRecord::Base.transaction do
       user_id: user.id,
       birthdate: "1990-01-01",
       phone_number: "123456789"
+    )
+  end
+
+  # Create a user => openvolt user
+  if User.find_by(email: "test@openvolt.com").nil?
+    user = User.create!(
+      email: "test@openvolt.com",
+      password: "12345678",
+      password_confirmation: "12345678",
+      properties: {
+        account_type: "super_admin",
+        platform_access: "all"
+      }
+    )
+    user.confirm
+    user.add_role :super_admin
+
+    admin = Admin.create!(
+      user_id: user.id
     )
   end
 end

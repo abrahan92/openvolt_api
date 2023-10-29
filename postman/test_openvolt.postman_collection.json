@@ -1,0 +1,1636 @@
+{
+	"info": {
+		"_postman_id": "121c1d2d-47a9-4d92-8fd8-e3f1d6bb4759",
+		"name": "Openvolt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27645507",
+		"_collection_link": "https://gold-eclipse-830795.postman.co/workspace/My-Workspace~48b1a4d1-42f0-40c0-81cd-1f6345322dd0/collection/27645507-121c1d2d-47a9-4d92-8fd8-e3f1d6bb4759?action=share&source=collection_link&creator=27645507"
+	},
+	"item": [
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "V1",
+					"item": [
+						{
+							"name": "Users",
+							"item": [
+								{
+									"name": "[CREATE] User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"lastname\": \"{{$randomLastName}}\",\n    \"email\": \"newtest{{$randomInt}}@test.com\",\n    \"password\": \"987654321\",\n    \"password_confirmation\": \"987654321\",\n    \"properties\": {\n        \"platform_access\": \"all\",\n        \"account_type\": \"admin\"\n    },\n    \"roles\": [1],\n    \"profile\": {\n        \"birthdate\": \"1991-10-25\",\n        \"phone_number\": \"12345678\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/users",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[POST] Confirm User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/users/3/confirm_user",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"3",
+												"confirm_user"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[SHOW] User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/users/3",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[SHOW] Me",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/users/me",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[LIST] Users",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/users",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[UPDATE] User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Test\",\n    \"properties\": {\n        \"platform_access\": \"mobile\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/users/59",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"59"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[DELETE] User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/users/19",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"19"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Roles",
+							"item": [
+								{
+									"name": "[LIST] Roles",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/roles/",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[SHOW] Role",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/roles/3",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[CREATE] Create Role",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"super_admin\",\n    \"permission_ids\": [1, 2, 3, 4]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/roles",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[DELETE] Role",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/roles/40",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"40"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[UPDATE] Role",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Cookie",
+												"value": "{{cookies}}",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Client-Id",
+												"value": "{{client_id}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"super_admin\",\n    \"permission_ids\": [1, 2, 3, 4]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/roles/1",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[CREATE] Add Role to User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"user_role\":{\n        \"user_id\": 1,\n        \"role_id\": 1\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/add_role_to_user",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"add_role_to_user"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[DELETE] Role to User",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"user_role\":{\n        \"user_id\": 1,\n        \"role_id\": 1\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/delete_role_from_user",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"delete_role_from_user"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Role Permissions",
+							"item": [
+								{
+									"name": "[LIST] Role Permissions",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/role_permissions",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"role_permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[CREATE] Add Role Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"role_id\": 1,\n    \"permission_id\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/role_permissions",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"role_permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[UPDATE] Role Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"role_id\": 1,\n    \"permission_id\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/role_permissions/63",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"role_permissions",
+												"63"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[SHOW] Role Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/role_permissions/63",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"role_permissions",
+												"63"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[DELETE] Role Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"user_role\":{\n        \"user_id\": 1,\n        \"role_id\": 1\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/role_permissions/63",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"role_permissions",
+												"63"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Permission",
+							"item": [
+								{
+									"name": "[CREATE] Add Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"action_perform\": \"read\",\n    \"subject\": \"energy_meter\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/permissions",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[LIST] Permissions",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/permissions",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[UPDATE] Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"action_perform\": \"write\",\n    \"subject\": \"energy_meter\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{api_url}}/api/v1/permissions/31",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"31"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[DELETE] Permission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/permissions/30",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"30"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[SHOW] Permissions",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/permissions/13",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"permissions",
+												"13"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Meter",
+							"item": [
+								{
+									"name": "[SHOW] Consumption",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api_url}}/api/v1/meters/6514167223e3d1424bf82742/consumption?start_date=2023-01-01&end_date=2023-01-03&granularity=hh",
+											"host": [
+												"{{api_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"meters",
+												"6514167223e3d1424bf82742",
+												"consumption"
+											],
+											"query": [
+												{
+													"key": "start_date",
+													"value": "2023-01-01"
+												},
+												{
+													"key": "end_date",
+													"value": "2023-01-03"
+												},
+												{
+													"key": "granularity",
+													"value": "hh"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "OAuth",
+			"item": [
+				{
+					"name": "Confirmation",
+					"item": [
+						{
+							"name": "Confirm Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "confirmation_token",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api_url}}/users/confirmation",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"confirmation"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Passwords",
+					"item": [
+						{
+							"name": "Send Email Instructions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "new_other@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api_url}}/users/password",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "reset_password_token",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api_url}}/users/password",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFirstName}}\",\n    \"lastname\": \"{{$randomLastName}}\",\n    \"email\": \"test{{$randomInt}}@{{$randomDomainName}}.com\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\",\n    \"properties\": {\n        \"platform_access\": \"all\",\n        \"account_type\": \"admin\"\n    },\n    \"roles\": [1],\n    \"profile\": {\n        \"birthdate\": \"1991-10-25\",\n        \"phone_number\": \"12345678\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/users",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"access_token\", null);",
+									"pm.collectionVariables.set(\"refresh_token\", null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/oauth/revoke",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"oauth",
+								"revoke"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the access_token in an environment variable",
+									"var access_token = pm.response.json().access_token;",
+									"var refresh_token = pm.response.json().refresh_token;",
+									"",
+									"pm.collectionVariables.set(\"access_token\", access_token);",
+									"pm.collectionVariables.set(\"refresh_token\", refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-Token",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "request_from",
+									"value": "web",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/oauth/token",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var cookies = pm.cookies.toObject();",
+									"",
+									"if (cookies.defaultapi_refresh_token) {",
+									"    pm.collectionVariables.set(\"refresh_token\", cookies.defaultapi_refresh_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-CSRF-Token",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/oauth/token",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "test_api_key_client_id",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "test_api_key_client_secret",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "test@openvolt.com",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "12345678",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
